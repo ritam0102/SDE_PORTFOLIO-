@@ -15,10 +15,11 @@
     "@supabase/supabase-js": "^2.49.4",
     "framer-motion": "^12.27.0",
     "lucide-react": "^0.562.0",
-    "next": "15.5.7",
+    "next": "^16.1.6",
     "posthog-js": "^1.270.1",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "resend": "^6.9.1"
   },
   "devDependencies": {
     "@types/node": "^20",

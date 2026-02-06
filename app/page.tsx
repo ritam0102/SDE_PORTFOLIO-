@@ -2,14 +2,14 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Github, 
-  Linkedin, 
-  Mail, 
-  ExternalLink, 
-  Code2, 
-  Terminal, 
-  Cpu, 
+import {
+  Github,
+  Linkedin,
+  Mail,
+  ExternalLink,
+  Code2,
+  Terminal,
+  Cpu,
   Globe,
   ChevronRight,
   Layers,
@@ -20,40 +20,32 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+import { type TablesInsert } from '@/database.types';
+import { sendContactEmail } from './actions';
 
 const getGoogleDriveImageUrl = (id: string) => `https://drive.google.com/thumbnail?id=${id}&sz=w1000`;
 
 const galleryItems = [
   {
-    url: getGoogleDriveImageUrl("1BDZaqfxc7XGr5T3OPjKpDvC4m2WkrlA7"),
-    title: "Workspace Setup",
-    category: "Environment"
+    url: getGoogleDriveImageUrl("11L0BHHmLf5ZVIroh1loUMR4eETvai6OC"),
+    title: "IT Department",
+    category: "JGEC_24"
   },
   {
-    url: getGoogleDriveImageUrl("1cRZ6UpxOplKiLmPLAVteeBDReRv0m9IM"),
-    title: "System Architecture",
-    category: "Design"
+    url: getGoogleDriveImageUrl("1-No2B_X4D_rYcqNGb-m8LLONsOdMznVn"),
+    title: "College Days",
+    category: "JGEC_24"
   },
   {
-    url: getGoogleDriveImageUrl("1s7LlsRevolsMpWMilhzZhhTLT0qTRUfD"),
-    title: "Code Review Session",
-    category: "Process"
+    url: getGoogleDriveImageUrl("1JnulFdVz53XWFIk0Wwkexz21AgY3pld0"),
+    title: "Kangchenjunga",
+    category: "Away from the screen"
   },
   {
-    url: getGoogleDriveImageUrl("1R1agvh1JtVcWw8H1RsgvJJWELgot_WIL"),
-    title: "Cloud Infrastructure",
-    category: "DevOps"
+    url: getGoogleDriveImageUrl("1MSoWYu1OSjAlDcP8sjeWJe07lzp4byAw"),
+    title: "Adventure Time",
+    category: "Weekend getaway"
   },
-  {
-    url: getGoogleDriveImageUrl("151ziLyXmL-gh1ZukKHK3epcNBRubnrQG"),
-    title: "Data Analytics",
-    category: "Analytics"
-  },
-  {
-    url: getGoogleDriveImageUrl("1IsmhfApePnLcOSdmu1U0WjqglP60eOCp"),
-    title: "Security Audit",
-    category: "Security"
-  }
 ];
 
 const projects = [
@@ -134,8 +126,8 @@ export default function Home() {
     const formData = new FormData(e.currentTarget);
     const countryCode = formData.get('countryCode') as string;
     const phoneNumber = formData.get('phone') as string;
-    
-    const data = {
+
+    const data: TablesInsert<'contacts'> = {
       name: formData.get('name') as string,
       phone: phoneNumber ? `${countryCode} ${phoneNumber}` : null,
       address: formData.get('address') as string,
@@ -143,14 +135,16 @@ export default function Home() {
     };
 
     const supabase = createClient();
-    const { error: submitError } = await supabase
-      .from('contacts')
+    const { error: submitError } = await (supabase.from('contacts') as any)
       .insert([data]);
 
     if (submitError) {
       setError('Something went wrong. Please try again.');
       setIsSubmitting(false);
     } else {
+      // Send email notification
+      await sendContactEmail(data);
+
       setIsSubmitted(true);
       setIsSubmitting(false);
       (e.target as HTMLFormElement).reset();
@@ -179,7 +173,7 @@ export default function Home() {
       <main className="max-w-6xl mx-auto px-6 pt-32 pb-20">
         {/* Home / Hero Section */}
         <section id="home" className="mb-32 min-h-[60vh] flex flex-col md:flex-row items-center justify-between gap-12">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -191,7 +185,7 @@ export default function Home() {
               <span className="text-gray-500">I build scalable systems.</span>
             </h1>
             <p className="max-w-xl text-gray-400 text-lg mb-10 leading-relaxed">
-              Software Engineer specializing in distributed systems and cloud infrastructure. 
+              Software Engineer specializing in distributed systems and cloud infrastructure.
               Currently focused on building high-performance backend services and developer tools.
             </p>
             <div className="flex gap-4">
@@ -244,23 +238,23 @@ export default function Home() {
               className="space-y-6 text-gray-400 leading-relaxed"
             >
               <p>
-                I am a passionate Software Development Engineer with a strong foundation in building 
-                robust and scalable backend systems. My journey in tech started with a deep curiosity 
+                I am a passionate Software Development Engineer with a strong foundation in building
+                robust and scalable backend systems. My journey in tech started with a deep curiosity
                 about how complex systems handle millions of requests.
               </p>
               <p>
-                With expertise in <span className="text-white">Go, Rust, and TypeScript</span>, I focus on 
-                creating efficient architectures that solve real-world problems. I enjoy diving deep 
+                With expertise in <span className="text-white">Go, Rust, and TypeScript</span>, I focus on
+                creating efficient architectures that solve real-world problems. I enjoy diving deep
                 into distributed systems, cloud infrastructure, and performance optimization.
               </p>
               <p>
-                When I'm not coding, you can find me exploring new technologies, contributing to 
+                When I'm not coding, you can find me exploring new technologies, contributing to
                 open-source projects, or writing about technical concepts on my blog.
               </p>
               <div className="pt-4">
-                <a 
-                  href="https://drive.google.com/file/d/1Dl1q3POaC5uqAkk203b5XOg17RNu924X/view?usp=sharing" 
-                  target="_blank" 
+                <a
+                  href="https://drive.google.com/file/d/1Dl1q3POaC5uqAkk203b5XOg17RNu924X/view?usp=sharing"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-medium transition-all text-white"
                 >
@@ -297,7 +291,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {skills.map((skill, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -327,7 +321,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, idx) => (
-              <motion.div 
+              <motion.div
                 key={idx}
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -370,14 +364,6 @@ export default function Home() {
               <h2 className="text-2xl font-bold">Gallery</h2>
               <div className="h-px flex-1 bg-white/10"></div>
             </div>
-            <a 
-              href="https://drive.google.com/drive/folders/12FXxCUYKh-v-LLRqpXDs42SlEVur5Yrz?usp=sharing" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors"
-            >
-              View All on Drive <ExternalLink size={14} />
-            </a>
           </div>
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
             {galleryItems.map((item, idx) => (
@@ -432,7 +418,7 @@ export default function Home() {
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
                   <p className="text-gray-400 mb-8">Thank you for reaching out. I'll get back to you as soon as possible.</p>
-                  <button 
+                  <button
                     onClick={() => setIsSubmitted(false)}
                     className="text-blue-400 hover:underline font-medium"
                   >
