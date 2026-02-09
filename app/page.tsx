@@ -16,7 +16,10 @@ import {
   Loader2,
   CheckCircle2,
   User,
-  FileDown
+  FileDown,
+  Phone,
+  MapPin,
+  MessageSquare
 } from 'lucide-react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
@@ -129,6 +132,7 @@ export default function Home() {
 
     const data: TablesInsert<'contacts'> = {
       name: formData.get('name') as string,
+      email: formData.get('email') as string,
       phone: phoneNumber ? `${countryCode} ${phoneNumber}` : null,
       address: formData.get('address') as string,
       message: formData.get('message') as string,
@@ -430,26 +434,46 @@ export default function Home() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm font-medium text-gray-400 ml-1">Name *</label>
-                      <input
-                        required
-                        id="name"
-                        name="name"
-                        type="text"
-                        placeholder="Full Name"
-                        className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all"
-                      />
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                        <input
+                          required
+                          id="name"
+                          name="name"
+                          type="text"
+                          placeholder="Full Name"
+                          className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <label htmlFor="phone" className="text-sm font-medium text-gray-400 ml-1">Phone No.</label>
-                      <div className="flex gap-2">
+                      <label htmlFor="email" className="text-sm font-medium text-gray-400 ml-1">Email *</label>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                        <input
+                          required
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="email@example.com"
+                          className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="phone" className="text-sm font-medium text-gray-400 ml-1">Phone Number</label>
+                      <div className="relative flex gap-2">
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 z-10" size={18} />
                         <select
                           name="countryCode"
-                          className="w-24 px-2 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all text-sm"
+                          className="w-32 pl-12 pr-2 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all text-sm appearance-none"
                           defaultValue="+91"
                         >
                           {countryCodes.map((c) => (
                             <option key={c.code} value={c.code} className="bg-[#1a1a1a]">
-                              {c.code} ({c.country})
+                              {c.code}
                             </option>
                           ))}
                         </select>
@@ -462,28 +486,34 @@ export default function Home() {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="address" className="text-sm font-medium text-gray-400 ml-1">Address *</label>
-                    <input
-                      required
-                      id="address"
-                      name="address"
-                      type="text"
-                      placeholder="123 Street, City, Country"
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all"
-                    />
+                    <div className="space-y-2">
+                      <label htmlFor="address" className="text-sm font-medium text-gray-400 ml-1">Address *</label>
+                      <div className="relative">
+                        <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                        <input
+                          required
+                          id="address"
+                          name="address"
+                          type="text"
+                          placeholder="123 Street, City, Country"
+                          className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all"
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-sm font-medium text-gray-400 ml-1">Message *</label>
-                    <textarea
-                      required
-                      id="message"
-                      name="message"
-                      rows={4}
-                      placeholder="How can I help you?"
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all resize-none"
-                    />
+                    <div className="relative">
+                      <MessageSquare className="absolute left-4 top-4 text-gray-500" size={18} />
+                      <textarea
+                        required
+                        id="message"
+                        name="message"
+                        rows={4}
+                        placeholder="How can I help you?"
+                        className="w-full pl-12 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 outline-none transition-all resize-none"
+                      />
+                    </div>
                   </div>
 
                   {error && (

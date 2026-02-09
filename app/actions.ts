@@ -4,7 +4,7 @@ import { Resend } from 'resend'
 import { type TablesInsert } from '@/database.types';
 
 export async function sendContactEmail(formData: TablesInsert<'contacts'>) {
-    const { name, phone, address, message } = formData
+    const { name, email, phone, address, message } = formData
 
     // Lazy initialize Resend to avoid crashing if API key is missing on load
     const apiKey = process.env.RESEND_API_KEY;
@@ -24,6 +24,7 @@ export async function sendContactEmail(formData: TablesInsert<'contacts'>) {
             html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email || 'Not provided'}</p>
         <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
         <p><strong>Address:</strong> ${address}</p>
         <p><strong>Message:</strong></p>
