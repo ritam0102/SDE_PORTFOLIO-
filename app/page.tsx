@@ -146,8 +146,8 @@ export default function Home() {
       setError('Something went wrong. Please try again.');
       setIsSubmitting(false);
     } else {
-      // Send email notification
-      await sendContactEmail(data);
+      // Send email notification in background (don't wait for it)
+      sendContactEmail(data).catch(err => console.error('Email send failed:', err));
 
       setIsSubmitted(true);
       setIsSubmitting(false);
